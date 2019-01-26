@@ -8,6 +8,7 @@ This calls rsync - which is required to be installed on both local and
 remote servers (can use rsync over SSH in usual format if syncing to a remote server).
 """
 
+_VERSION = 1.1
 _CURRENT_WORKING_DIR = f'{os.path.dirname(os.path.realpath(__file__))}/'  # current working directory
 _TARGET_DIR = f'/home/me/example_backup/'  # target sync directory
 _IGNORE_FILES = []  # filenames or directory names to exclude from the sync
