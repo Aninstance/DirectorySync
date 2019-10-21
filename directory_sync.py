@@ -8,11 +8,11 @@ This calls rsync - which is required to be installed on both local and
 remote servers (can use rsync over SSH in usual format if syncing to a remote server).
 """
 
-_VERSION = 1.1
+_VERSION = 1.2
 _CURRENT_WORKING_DIR = f'{os.path.dirname(os.path.realpath(__file__))}/'  # current working directory
 _TARGET_DIR = f'/home/me/example_backup/'  # target sync directory
-_IGNORE_FILES = []  # filenames or directory names to exclude from the sync
-
+_IGNORE_FILES = ()  # filenames to exclude from the sync
+_IGNORE_DIRS = () # directories to exclude from the sync
 
 def inject_exclusion(val, cmd):
     """
@@ -48,6 +48,11 @@ def sync(local_dir_name, remote_dir_name, delete_on_remote=False, dry_run=False)
             remote_dir_name += '/'
         if local_dir_name[-1:] != '/':
             local_dir_name += '/'
+
+        # ensure dir is not in exlusion tuple
+        if local_dir_name.rstrip('/') in _IGNORE_DIRS:
+            print(f'{local_dir_name} is set to be ignored!')
+            return False
 
         # define base command
         cmd = ['rsync', '-av', '--progress', local_dir_name, f'{remote_dir_name}{local_dir_name}']
